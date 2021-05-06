@@ -1,0 +1,3 @@
+﻿Constraint,Calories,Cholesterol mg,Total_Fat g,Sodium mg,Carbohydrates g,Dietary_Fiber g,Protein g,Vit_A IU,Vit_C IU,Calcium mg,Iron mg
+Minimum daily intake,1500,30,20,800,130,125,60,1000,400,700,10
+Maximum daily intake,2500,240,70,2000,450,250,100,10000,5000,1500,40

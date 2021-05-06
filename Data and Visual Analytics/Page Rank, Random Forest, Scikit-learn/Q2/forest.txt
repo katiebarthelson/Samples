@@ -1,0 +1,6 @@
+1. What is the main reason to use a random forest versus a decision tree (using no more than 50 words)?
+The main reason a random forest should be used is to combine the predictions of many decision trees into a single model.
+2. How long did your random forest take to run (in seconds)?
+00.218309
+3. What accuracy (to two decimal places, xx.xx%) were you able to obtain?
+65.19%

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<head>
+  <title>Games Rating: 2015 - 2019</title>
+  <meta charset="utf-8">
+  <script type="text/javascript" src="../lib/d3.v5.min.js"></script>
+  <script type="text/javascript" src="../lib/d3-dsv.min.js"></script>
+</head>
+
+<body>
+
+<div id="container"></div>
+
+<script>
+var margin = {top: 50, right: 70, bottom: 80, left: 100}
+  , width = window.innerWidth - margin.left - margin.right // Use the window's width window.innerWidth
+  , height = 450 - margin.top - margin.bottom; // Use the window's height window.innerHeight
+
+const timeConv = d3.timeParse("%Y");
+// 5. X scale
+var xScale = d3.scaleLinear()
+    .domain([0,9])
+    .range([0, width])
+
+// 6. Y scale
+var yScale = d3.scaleLinear()
+    .domain([0, 600]) // input
+    .range([height, 0]); // output
+
+
+// 1. Add the SVG to the page and employ #2
+var svg = d3.select("body").append("svg")
+.attr("width", width + margin.left + margin.right)
+.attr("height", height + margin.top + margin.bottom)
+.append("g")
+.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// 3. Call the x axis in a group tag
+svg.append("g")
+.attr("class", "x axis")
+.attr("transform", "translate(0," + height + ")")
+.call(d3.axisBottom(xScale));
+
+// Add the text label for X axis
+svg.append("text")
+ .attr("text-anchor", "end")
+ .attr("x", width/2 + margin.left -60)
+ .attr("y", height + margin.top + 5)
+ .text("Rating");
+
+// 4. Call the y axis in a group tag
+svg.append("g")
+  .attr("class", "y axis")
+  .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
+
+// Add the text label for Y axis
+svg.append("text")
+ .attr("text-anchor", "end")
+ .attr("transform", "rotate(-90)")
+ .attr("y", -margin.left + 50)
+ .attr("x", -margin.top - height/2 + 100)
+ .text("Count")
+
+ // Add a title
+ svg.append("text")
+   .attr("x", (width / 2))
+   .attr("y", 0 - (margin.top / 2))
+   .attr("text-anchor", "middle")
+   .style("font-size", "16px")
+   .text("Board Games by Rating 2015-2019");
+
+   // Add gt username
+   svg.append("text")
+     .attr("x", (width / 2))
+     .attr("y", 0 - (margin.top / 2) + 20)
+     .attr("text-anchor", "middle")
+     .style("font-size", "16px")
+     //.style("text-decoration", "underline")
+     .text("kbarthelson3");
+
+     // Bar chart svg
+     var svg2 = d3.select("body").append("svg")
+     .attr("width", width + margin.left + margin.right)
+     .attr("height", height + margin.top + margin.bottom)
+     .append("g")
+     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+data = d3.csv("average-rating.csv").then(function(data) {
+
+  // format the data
+  data.forEach(function(d) {
+      d.name = d['name'],
+      d.year = timeConv(d['year']),
+      d.average_rating = +d['average_rating'],
+      d.users_rated = +d['users_rated']
+  });
+  var count_data = d3.nest()
+    .key(function(d){
+      return d.year;
+    })
+    .key(function(d){
+      return rating = +Math.floor(d.average_rating);
+    }).sortKeys(d3.ascending)
+    .rollup(function(leaves){
+        return cnt = leaves.length;
+      })
+      .entries(data);
+      console.log(count_data);
+
+    var sum_ratings = d3.nest()
+    .key(function(d){
+      return d.year;
+      })
+    .key(function(d){
+        return d.name;
+        })
+      .sortKeys(function(d){
+          return d3.ascending(d.users_rated);
+        })
+      .rollup(function(d){
+        return d3.sum(d, function(d){
+            return +d.users_rated;
+          });
+        })
+        .entries(data);
+      console.log(sum_ratings);
+
+      // 7. d3's line generator
+      var linegen = d3.line()
+        .x(function(v){
+          return xScale(+v.key);
+        })
+        .y(function(v){
+          return yScale(+v.value);
+        })
+        //.curve(d3.curveMonotoneX)
+      var color = d3.scaleOrdinal(d3.schemeCategory10).domain([0,10]);
+      var count_filter = count_data.filter(function(d,i){
+          if(i == 0 | i == 4 | i==5 | i==7 | i==8){return count_data[i].values;};
+      })
+      console.log(count_filter);
+      count_filter.forEach(function(d,i){
+        var pathdata = linegen(d.values)
+        svg.append("path")
+            //.data(pathdata)
+            .attr("class", "line")
+            .attr('id', 'line' + d.key)
+            .style("stroke", color(i))
+            .attr("d", pathdata)
+            .attr("fill", "none");
+
+        svg.selectAll()
+            .data(d.values)
+          .enter().append("circle") // Uses the enter().append() method
+            .attr("class", "dot") // Assign a class for styling
+            .attr("cx", function(d) { return xScale(+d.key); })
+            .attr("cy", function(d) { return yScale(+d.value); })
+            .attr("text-anchor", "middle")
+            .style("fill", color(i))
+            .attr("r", 5)
+            .on('mouseenter', function (actual, ind) {
+              //console.log(actual); // rating : sum pair for point
+              //console.log(ind); //index of
+              d3.select(this).attr('opacity', 0.5).attr('r',20)
+              .classed("selected", function(e, j) {
+                var sum_filter = sum_ratings.filter(function(e,j){
+                  //console.log(j); // index of sum ratings
+                  //console.log(e.key); //key for all years
+                    if(j==ind){
+                      console.log(sum_ratings[j+1].values)
+                      return sum_ratings[j+1].values;};
+                })
+                //console.log(sum_filter);
+                var top_five = sum_filter[0].values.slice(0,5);
+                //console.log(top_five);
+                var rate = e.key;
+                var cnt = e.value;
+                var stryr = d.key;
+                var stryrlist = stryr.split(" ");
+                var yr = stryrlist[3];
+                svg2.selectAll("text").remove();
+                svg2.selectAll("g").remove();
+                svg2.selectAll("svg2").remove()
+                svg2.selectAll("g").remove()
+                svg2.selectAll("rect").remove()
+                svg2.selectAll("text").remove()
+                svg2.selectAll("text").remove()
+                svg2.selectAll("myBar").remove()
+                svg2.selectAll().remove()
+                svg2.append("text")
+                 .attr("text-anchor", "end")
+                 .attr("x", width/2 + margin.left -60)
+                 .attr("y", height + margin.top + 5)
+                 .text("Number of users");
+
+                 svg2.append("text")
+                  .attr("text-anchor", "end")
+                  .attr("transform", "rotate(-90)")
+                  .attr("y", -margin.left + 20)
+                  .attr("x", -margin.top - height/2 + 100)
+                  .text("Games")
+                svg2.append("text")
+                  .attr("x", (width / 2))
+                  .attr("y", 0 - (margin.top / 2))
+                  .attr("text-anchor", "middle")
+                  .style("font-size", "16px")
+                  .text("Top 5 Most Rated Games for "+ yr + " with Rating " + rate);
+
+                // 5. X scale
+                var xScale2 = d3.scaleLinear()
+                    .domain([0, d3.max(top_five, function(v){ return +v.values; })])
+                    .range([0, width])
+
+                // 6. Y scale
+                var yScale2 = d3.scaleBand()
+                    .domain(top_five.map(function(v){return v.key.substring(0,10);}))
+                    .padding(.1)
+                    .range([height, 0], .1)
+
+                xScale2.domain([0, d3.max(top_five, function(v) { return +v.value; })]);
+
+                svg2.append("g")
+                  .call(d3.axisLeft(yScale2));
+
+                  // Add bars to svg2
+                  svg2.selectAll("mybar").data(top_five)
+                  .enter().append("rect")
+                  //.attr("x", function(d) { return xScale2(+d.value); })
+                  .attr("y", function(v) { return yScale2(v.key.substring(0,10)); })
+                  .attr("width", function(v) { return xScale2(+v.value); })
+                  .attr("height", yScale2.bandwidth()/1.5)
+                  .attr("fill", color(i))
+                  //.attr("width", width/2 )
+                  //.attr("height", height /2 )
+
+                  svg2.append("g")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(d3.axisBottom(xScale2))
+              })
+
+              })
+            .on('mouseout', function (actual, ind) {
+              //console.log(actual); // rating : sum pair for point
+              //console.log(ind); //index of
+              d3.select(this).attr('opacity', 1).attr('r',5)
+              svg2.selectAll("text").remove();
+              svg2.selectAll("g").remove();
+              svg2.selectAll("svg2").remove()
+              svg2.selectAll("g").remove()
+              svg2.selectAll("rect").remove()
+              svg2.selectAll("text").remove()
+              svg2.selectAll("text").remove()
+              svg2.selectAll("myBar").remove()
+              svg2.selectAll().remove()
+              })
+            .enter();
+      })
+
+      // legend
+      svg.append("circle").attr("cx",width-50).attr("cy",130).attr("r", 6).style("fill", color(0))
+      svg.append("circle").attr("cx",width-50).attr("cy",150).attr("r", 6).style("fill", color(1))
+      svg.append("circle").attr("cx",width-50).attr("cy",170).attr("r", 6).style("fill", color(2))
+      svg.append("circle").attr("cx",width-50).attr("cy",190).attr("r", 6).style("fill", color(3))
+      svg.append("circle").attr("cx",width-50).attr("cy",210).attr("r", 6).style("fill", color(4))
+      svg.append("text").attr("x", width-30).attr("y", 130).text("2015").style("font-size", "15px").attr("alignment-baseline","middle")
+      svg.append("text").attr("x", width-30).attr("y", 150).text("2016").style("font-size", "15px").attr("alignment-baseline","middle")
+      svg.append("text").attr("x", width-30).attr("y", 170).text("2017").style("font-size", "15px").attr("alignment-baseline","middle")
+      svg.append("text").attr("x", width-30).attr("y", 190).text("2018").style("font-size", "15px").attr("alignment-baseline","middle")
+      svg.append("text").attr("x", width-30).attr("y", 210).text("2019").style("font-size", "15px").attr("alignment-baseline","middle")
+
+
+
+
+
+
+});
+//console.log(data);
+
+
+</script>
+
+</body>

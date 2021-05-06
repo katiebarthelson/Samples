@@ -1,0 +1,4 @@
+kbarthelson3
+It is beneficial to use nonlinear scales like square root and log scale
+in charts for a normalize and reduce the skew of a large range of values.
+In visualization, this helps the graph to be perceptively correct.

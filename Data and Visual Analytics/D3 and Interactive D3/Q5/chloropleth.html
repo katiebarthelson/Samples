@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+	<!-- add title -->
+	<title>Game Chloropleth</title>
+
+    <!-- import required libraries here -->
+		<meta charset="utf-8">
+		<script type="text/javascript" src="../lib/d3.v5.min.js"></script>
+		<script type="text/javascript" src="../lib/d3-dsv.min.js"></script>
+		<script type="text/javascript" src="../lib/d3-geo-projection.v2.min.js"></script>
+		<script type="text/javascript" src="../lib/d3-legend.min.js"></script>
+		<script type="text/javascript" src="../lib/topojson.v2.min.js"></script>
+		<script type="text/javascript" src="../lib/d3-tip.min.js"></script>
+
+	<style>
+		<!-- define CSS rules here -->
+		.counties {
+		  fill: none;
+		}
+
+		.states {
+		  fill: none;
+		  stroke: #fff;
+		  stroke-linejoin: round;
+		}
+		div.d3-tip {
+		line-height: 1;
+		padding: 6px;
+		background: rgba(0, 0, 0, 0.8);
+		color: #fff;
+		border-radius: 4px;
+		font-size: 12px;
+	}
+
+	/* Creates a small triangle extender for the tooltip */
+	div.d3-tip:after {
+		box-sizing: border-box;
+		display: inline;
+		font-size: 10px;
+		width: 100%;
+		line-height: 1;
+		color: rgba(0, 0, 0, 0.8);
+		content: "\25BC";
+		position: absolute;
+		text-align: center;
+	}
+
+	/* Style northward tooltips specifically */
+	div.d3-tip.n:after {
+		margin: -2px 0 0 0;
+		top: 100%;
+		left: 0;
+	}
+
+	</style>
+</head>
+
+
+<body>
+    <!-- Add heading for the visualization -->
+
+	<!-- Dropdown -->
+	Select Option<select id="selectButton"></select>
+
+	<!-- append visualization svg to this div-->
+    <div id="chloropleth"></div>
+
+    <script>
+
+		// enter code to define margin and dimensions for svg
+		var margin = {top: 50, right: 70, bottom: 80, left: 100}
+		  , width = window.innerWidth - margin.left - margin.right // Use the window's width window.innerWidth
+		  , height = window.innerHeight - margin.top - margin.bottom; // Use the window's height window.innerHeight
+
+		// enter code to create svg
+		var svg = d3.select("chloropleth").append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+		.append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+		// enter code to create color scale
+		var color = d3.scaleOrdinal(d3.schemeCategory10).domain([0,10]);
+
+		// enter code to define tooltip
+
+		var tooltip = svg.append("g");
+  
+
+		// enter code to define projection and path required for Choropleth
+		var world = d3.map();
+		var path = d3.geoPath();
+		var gameData = null;
+		var selectedGame = null;
+
+		// define any other global variables
+
+        Promise.all([
+            // enter code to read files
+						d3.json('world_countries.json'),
+  					d3.csv('ratings-by-country.csv').then(function(gameData) {
+							gameData.forEach(function(d) {
+								d.Game = d['Game'],
+								d.Country = d['Country'],
+					      d.Averagerating = +d['Average Rating'],
+					      d.Users = +d['Number of Users']
+							});
+						})
+        ]).then(
+            // enter code to call ready() with required arguments
+						ready(world,gameData),
+						console.log(world),
+						console.log(gameData)
+        );
+
+		// this function should be called once the data from files have been read
+		// world: topojson from world_countries.json
+		// gameData: data from ratings-by-country.csv
+
+        function ready(error, world, gameData) {
+            // enter code to extract all unique games from gameData
+
+            // enter code to append the game options to the dropdown
+
+            // event listener for the dropdown. Update choropleth and legend when selection changes. Call createMapAndLegend() with required arguments.
+
+            // create Choropleth with default option. Call createMapAndLegend() with required arguments.
+						createMapAndLegend(world, gameData, selectedGame)
+        }
+
+		// this function should create a Choropleth and legend using the world and gameData arguments for a selectedGame
+		// also use this function to update Choropleth and legend when a different game is selected from the dropdown
+        function createMapAndLegend(world, gameData, selectedGame){
+
+
+        }
+    </script>
+
+</body>
+
+</html>

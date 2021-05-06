@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<!-- run: http-server & -->
+
+<head>
+  <style>
+    <!-- define CSS rules -->
+    <title>>Running Total of TMDb Movies by Year<title>
+  </style>
+</head>
+
+<body>
+<meta charset="utf-8">
+
+<!-- Load d3.js -->
+<script src="lib/d3/d3.min.js"></script>
+<script src="lib/d3-dsv/d3-dsv.min.js"></script>
+<script src="lib/d3-fetch/d3-fetch.min.js"></script>
+
+
+<!-- Create a div where the graph will take place -->
+<div id="HW1-Q3"></div>
+
+
+  <script>
+    // define the dimensions and margins for the graph
+    var margin = {top: 30, right: 30, bottom: 70, left: 80},
+        width = 460 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
+
+    // define function to parse time in years format
+    function yearFormat(x) {
+      return d3.timeParse("%Y")(x);
+    }
+
+    // append svg element to the body of the page
+    // set dimensions and position of the svg element
+    var svg = d3.select("body").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+
+    // Get the data
+	   var pathToCsv = "q3.csv";		// path to csv
+
+    d3.csv( pathToCsv, function (d) {
+      return {
+        // format data attributes if required
+        year: d3.timeParse("%Y")(d.year),
+        running_total: +d.running_total
+      }
+    }).then(function (data) {
+      console.log(data); // you should see the data in your browser's developer tools console
+
+      /* Create bar plot using data from csv */
+      // create scales x & y for X and Y axis and set their ranges
+      var xscale = d3.scaleBand()
+                    .domain([d3.min(data), d3.max(data)])
+                    .range([0, width])
+          yscale = d3.scaleLinear().domain([0, d3.max(data)]).range([height, 0]);
+
+      // set the domains of X and Y scales based on data
+      xscale.domain(data.map(function(d) { return d.year; }));
+      //xscale.domain(d3.extent(data, function(d) { return d.year; }))
+      yscale.domain([0, d3.max(data, function(d) { return +d.running_total; })]);
+
+      // Add the X Axis
+      //svg.append().call(x_axis)
+      var x = d3.scaleTime().domain(d3.extent(data, function(d) { return d.year; }))
+      .range([ 0, width ]);
+      svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x))
+        .selectAll("text")
+          .attr("transform", "translate(-10,0)rotate(-45)")
+          .style("text-anchor", "end");
+
+      // Add the text label for X axis
+      svg.append("text")
+       .attr("text-anchor", "end")
+       .attr("x", width/2 + margin.left -40)
+       .attr("y", height + margin.top + 20)
+       .text("Year");
+
+      // Add the Y Axis
+      //svg.append().call(y_axis)
+      var y = d3.scaleLinear()
+        .domain([0, d3.max(data, function(d) { return +d.running_total; })])
+        .range([ height, 0]);
+      svg.append("g")
+        .call(d3.axisLeft(y));
+
+        // Add bars to svg - create new elements based on your data
+        svg.selectAll("mybar").data(data)
+        .enter().append("rect")
+        .attr("x", function(d) { return x(d.year); })
+        .attr("y", function(d) { return y(d.running_total); })
+        .attr("width", xscale.bandwidth()/2)
+        .attr("height", function(d) { return height - yscale(d.running_total); })
+        .attr("fill", "#000000")
+
+      // Add the text label for Y axis
+      svg.append("text")
+       .attr("text-anchor", "end")
+       .attr("transform", "rotate(-90)")
+       .attr("y", -margin.left + 20)
+       .attr("x", -margin.top - height/2 + 80)
+       .text("Running Total")
+
+      // Add a title
+      svg.append("text")
+        .attr("x", (width / 2))
+        .attr("y", 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        //.style("text-decoration", "underline")
+        .text("Running Total of TMDb Movies by Year");
+
+      // Add gt username
+      svg.append("text")
+        .attr("x", (width - 2))
+        .attr("y", 350)
+        .attr("text-anchor", "middle")
+        .style("font-size", "10px")
+        .text("kbarthelson3");
+
+
+    }).catch(function (error) {
+      console.log(error);
+    });
+
+
+  </script>
+
+</body>

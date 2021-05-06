@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<style type="text/css">
+/* 13. Basic Styling with CSS */
+
+/* Style the lines by removing the fill and applying a stroke */
+.line {
+    fill: none;
+    stroke: #ffab00;
+    stroke-width: 3;
+}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+/* Style the dots by assigning a fill and stroke */
+.dot {
+    fill: #ffab00;
+    stroke: #fff;
+}
+
+  .focus circle {
+  fill: none;
+  stroke: steelblue;
+}
+
+</style>
+<!-- Body tag is where we will append our SVG and SVG objects-->
+<body>
+</body>
+
+<!-- Load in the d3 library -->
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script>
+
+// Add margins
+var margin = {top: 50, right: 155, bottom: 80, left: 80}
+  , width = window.innerWidth - margin.left - margin.right // Use the window's width window.innerWidth
+  , height = 450 - margin.top - margin.bottom; // Use the window's height window.innerHeight
+
+const timeConv = d3.timeParse("%Y-%m-%d");
+var startDate = new Date(2016,11,1)
+var endDate = new Date(2020,8,1)
+// Q3 scale a, b
+var xScale = d3.scaleTime()
+    .domain([startDate,endDate])
+    .range([0, width])
+    .nice(d3.timemonth)
+
+var yScale = d3.scaleLinear()
+    .domain([0, 100000]) // input
+    .range([height, 0]); // output
+
+// part c1 scale
+var ySqScale = d3.scaleSqrt()
+    .domain([0, 100000]) // input
+    .range([height, 0]); // output
+
+// part c2 scale
+var yLogScale = d3.scaleSymlog()
+    .domain([0, 100000]) // input
+    .range([height, 0]); // output
+
+    // 7. d3's line generator
+    var catanline = d3.line()
+      .x(function(d){
+        return xScale(d.date);
+      })
+      .y(function(d){
+        return yScale(d.Catancount);
+      })
+      .curve(d3.curveMonotoneX)
+
+    var dominionline = d3.line()
+      .x(function(d){
+        return xScale(d.date);
+      })
+      .y(function(d){
+        return yScale(d.Dominioncount);
+      })
+      .curve(d3.curveMonotoneX)
+
+    var codenamesline = d3.line()
+      .x(function(d){
+        return xScale(d.date);
+      })
+      .y(function(d){
+        return yScale(d.Codenamescount);
+      })
+      .curve(d3.curveMonotoneX)
+
+    var terraformingline = d3.line()
+      .x(function(d){
+        return xScale(d.date);
+      })
+      .y(function(d){
+        return yScale(d.Terraformingcount);
+      })
+      .curve(d3.curveMonotoneX)
+
+      var gloomhavenline = d3.line()
+      .x(function(d){
+      return xScale(d.date);
+      })
+      .y(function(d){
+      return yScale(d.Gloomhavencount);
+      })
+      .curve(d3.curveMonotoneX)
+
+      var magicline = d3.line()
+      .x(function(d){
+      return xScale(d.date);
+      })
+      .y(function(d){
+      return yScale(d.Magiccount);
+      })
+      .curve(d3.curveMonotoneX)
+
+      var dixitline = d3.line()
+      .x(function(d){
+        return xScale(d.date);
+      })
+      .y(function(d){
+        return yScale(d.Dixitcount);
+      })
+      .curve(d3.curveMonotoneX)
+
+      var monopolyline = d3.line()
+        .x(function(d){
+          return xScale(d.date);
+        })
+        .y(function(d){
+          return yScale(d.Monopolycount);
+        })
+        .curve(d3.curveMonotoneX)
+// ------------------------------------------
+// 7. d3's line generator
+var catansqline = d3.line()
+  .x(function(d){
+    return xScale(d.date);
+  })
+  .y(function(d){
+    return ySqScale(d.Catancount);
+  })
+  .curve(d3.curveMonotoneX)
+
+var dominionsqline = d3.line()
+  .x(function(d){
+    return xScale(d.date);
+  })
+  .y(function(d){
+    return ySqScale(d.Dominioncount);
+  })
+  .curve(d3.curveMonotoneX)
+
+var codenamessqline = d3.line()
+  .x(function(d){
+    return xScale(d.date);
+  })
+  .y(function(d){
+    return ySqScale(d.Codenamescount);
+  })
+  .curve(d3.curveMonotoneX)
+
+var terraformingsqline = d3.line()
+  .x(function(d){
+    return xScale(d.date);
+  })
+  .y(function(d){
+    return ySqScale(d.Terraformingcount);
+  })
+  .curve(d3.curveMonotoneX)
+
+  var gloomhavensqline = d3.line()
+  .x(function(d){
+  return xScale(d.date);
+  })
+  .y(function(d){
+  return ySqScale(d.Gloomhavencount);
+  })
+  .curve(d3.curveMonotoneX)
+
+  var magicsqline = d3.line()
+  .x(function(d){
+  return xScale(d.date);
+  })
+  .y(function(d){
+  return ySqScale(d.Magiccount);
+  })
+  .curve(d3.curveMonotoneX)
+
+  var dixitsqline = d3.line()
+  .x(function(d){
+    return xScale(d.date);
+  })
+  .y(function(d){
+    return ySqScale(d.Dixitcount);
+  })
+  .curve(d3.curveMonotoneX)
+
+  var monopolysqline = d3.line()
+    .x(function(d){
+      return xScale(d.date);
+    })
+    .y(function(d){
+      return ySqScale(d.Monopolycount);
+    })
+    .curve(d3.curveMonotoneX)
+
+  // ------------------------------------------
+  // 7. d3's line generator
+  var catanlogline = d3.line()
+    .x(function(d){
+      return xScale(d.date);
+    })
+    .y(function(d){
+      return yLogScale(d.Catancount);
+    })
+    .curve(d3.curveMonotoneX)
+
+  var dominionlogline = d3.line()
+    .x(function(d){
+      return xScale(d.date);
+    })
+    .y(function(d){
+      return yLogScale(d.Dominioncount);
+    })
+    .curve(d3.curveMonotoneX)
+
+  var codenameslogline = d3.line()
+    .x(function(d){
+      return xScale(d.date);
+    })
+    .y(function(d){
+      return yLogScale(d.Codenamescount);
+    })
+    .curve(d3.curveMonotoneX)
+
+  var terraforminglogline = d3.line()
+    .x(function(d){
+      return xScale(d.date);
+    })
+    .y(function(d){
+      return yLogScale(d.Terraformingcount);
+    })
+    .curve(d3.curveMonotoneX)
+
+    var gloomhavenlogline = d3.line()
+    .x(function(d){
+    return xScale(d.date);
+    })
+    .y(function(d){
+    return yLogScale(d.Gloomhavencount);
+    })
+    .curve(d3.curveMonotoneX)
+
+    var magiclogline = d3.line()
+    .x(function(d){
+    return xScale(d.date);
+    })
+    .y(function(d){
+    return yLogScale(d.Magiccount);
+    })
+    .curve(d3.curveMonotoneX)
+
+    var dixitlogline = d3.line()
+    .x(function(d){
+      return xScale(d.date);
+    })
+    .y(function(d){
+      return yLogScale(d.Dixitcount);
+    })
+    .curve(d3.curveMonotoneX)
+
+    var monopolylogline = d3.line()
+      .x(function(d){
+        return xScale(d.date);
+      })
+      .y(function(d){
+        return yLogScale(d.Monopolycount);
+      })
+      .curve(d3.curveMonotoneX)
+
+
+// 1. Add the SVG to the page
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var svg2 = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var svg3 = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var svg4 = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// Get the data
+d3.csv("boardgame_ratings.csv").then(function(data) {
+
+  // format the data
+  data.forEach(function(d) {
+      d.date = timeConv(d.date),
+      d.Catancount = +d['Catan=count'],
+      d.Catanrank = +d['Catan=rank'],
+      d.Dominioncount = +d['Dominion=count'],
+      d.Dominionrank = +d['Dominion=rank'],
+      d.Codenamescount = +d['Codenames=count'],
+      d.Codenamesrank = +d['Codenames=rank'],
+      d.Terraformingcount = +d['Terraforming Mars=count'],
+      d.Terraformingrank = +d['Terraforming Mars=rank'],
+      d.Gloomhavencount = +d['Gloomhaven=count'],
+      d.Gloomhavenrank = +d['Gloomhaven=rank'],
+      d.Magiccount = +d['Magic: The Gathering=count'],
+      d.Magicrank = +d['Magic: The Gathering=rank'],
+      d.Dixitcount = +d['Dixit=count'],
+      d.Dixitrank = +d['Dixit=rank'],
+      d.Monopolycount = +d['Monopoly=count'],
+      d.Monopolyrank = +d['Monopoly=rank']
+  });
+  var colours = d3.scaleOrdinal(d3.schemeCategory10).domain([0, d3.max(data, function(d) {
+	  return Math.max(d.Catancount,d.Dominioncount,d.Codenamescount,d.Terraformingcount,
+    d.Gloomhavencount,d.Dixitcount,d.Monopolycount, d.Magiccount); })]);
+  // Scale the range of the data
+  xScale.domain(d3.extent(data, function(d) { return d.date; }));
+  yScale.domain([0, d3.max(data, function(d) {
+	  return Math.max(d.Catancount,d.Dominioncount,d.Codenamescount,d.Terraformingcount,
+    d.Gloomhavencount,d.Dixitcount,d.Monopolycount, d.Magiccount); })]);
+
+  // 3a Add the paths ---------------------------------
+  svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke", colours(1))
+      .attr("d", catanline);
+
+  svg.append("text")
+		.attr("transform", "translate(" + (width+3) + "," + yScale(data[37].Catancount+5000)+ ")")
+		.attr("dy", ".35em")
+		.attr("text-anchor", "start")
+		.style("fill", colours(1))
+		.text("Catan");
+
+  // Add the path.
+  svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke", colours(2))
+      .attr("d", dominionline);
+
+  svg.append("text")
+    .attr("transform", "translate(" + (width+3) + "," + yScale(data[37].Dominioncount+3000)+ ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", colours(2))
+    .text("Dominion");
+
+  // Add the path.
+  svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke", colours(3))
+      .attr("d", codenamesline);
+
+  svg.append("text")
+    .attr("transform", "translate(" + (width+3) + "," + yScale(data[37].Codenamescount+8000)+ ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", colours(3))
+    .text("Codenames");
+
+  // Add the path.
+  svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke", colours(4))
+      .attr("d", terraformingline);
+
+  svg.append("text")
+    .attr("transform", "translate(" + (width+3) + "," + yScale(data[37].Terraformingcount+10000)+ ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", colours(4))
+    .text("Terraforming Mars");
+
+  // Add the path.
+  svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke", colours(5))
+      .attr("d", gloomhavenline);
+
+  svg.append("text")
+    .attr("transform", "translate(" + (width+3) + "," + yScale(data[37].Gloomhavencount+5000)+ ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", colours(5))
+    .text("Gloomhaven");
+
+  // Add the path.
+  svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke", colours(6))
+      .attr("d", dixitline);
+
+  svg.append("text")
+    .attr("transform", "translate(" + (width+3) + "," + yScale(data[37].Dixitcount+2000)+ ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", colours(6))
+    .text("Dixit");
+
+  // Add the path.
+  svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke", colours(7))
+      .attr("d", monopolyline);
+
+  svg.append("text")
+    .attr("transform", "translate(" + (width+3) + "," + yScale(data[37].Monopolycount+1000)+ ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", colours(7))
+    .text("Monopoly");
+
+  // Add the path.
+  svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke",colours(8))
+      .attr("d", magicline);
+
+  svg.append("text")
+    .attr("transform", "translate(" + (width+3) + "," + yScale(data[37].Magiccount+1000)+ ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", colours(8))
+    .text("Magic: The Gathering");
+
+    // 3b Add the paths ---------------------------------
+    svg2.append("path")
+        .data([data])
+        .attr("class", "line")
+        .style("stroke", colours(1))
+        .attr("d", catanline);
+
+    svg2.append("text")
+      .attr("transform", "translate(" + (width+10) + "," + yScale(data[37].Catancount+5000)+ ")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", colours(1))
+      .text("Catan");
+
+    // Add the path.
+    svg2.append("path")
+        .data([data])
+        .attr("class", "line")
+        .style("stroke", colours(2))
+        .attr("d", dominionline);
+
+    svg2.append("text")
+      .attr("transform", "translate(" + (width+10) + "," + yScale(data[37].Dominioncount+3000)+ ")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", colours(2))
+      .text("Dominion");
+
+    // Add the path.
+    svg2.append("path")
+        .data([data])
+        .attr("class", "line")
+        .style("stroke", colours(3))
+        .attr("d", codenamesline);
+
+    svg2.append("text")
+      .attr("transform", "translate(" + (width+10) + "," + yScale(data[37].Codenamescount+8000)+ ")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", colours(3))
+      .text("Codenames");
+
+    // Add the path.
+    svg2.append("path")
+        .data([data])
+        .attr("class", "line")
+        .style("stroke", colours(4))
+        .attr("d", terraformingline);
+
+    svg2.append("text")
+      .attr("transform", "translate(" + (width+10) + "," + yScale(data[37].Terraformingcount+10000)+ ")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", colours(4))
+      .text("Terraforming Mars");
+
+    // Add the path.
+    svg2.append("path")
+        .data([data])
+        .attr("class", "line")
+        .style("stroke", colours(5))
+        .attr("d", gloomhavenline);
+
+    svg2.append("text")
+      .attr("transform", "translate(" + (width+10) + "," + yScale(data[37].Gloomhavencount+5000)+ ")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", colours(5))
+      .text("Gloomhaven");
+
+    // Add the path.
+    svg2.append("path")
+        .data([data])
+        .attr("class", "line")
+        .style("stroke", colours(6))
+        .attr("d", dixitline);
+
+    svg2.append("text")
+      .attr("transform", "translate(" + (width+10) + "," + yScale(data[37].Dixitcount+2000)+ ")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", colours(6))
+      .text("Dixit");
+
+    // Add the path.
+    svg2.append("path")
+        .data([data])
+        .attr("class", "line")
+        .style("stroke", colours(7))
+        .attr("d", monopolyline);
+
+    svg2.append("text")
+      .attr("transform", "translate(" + (width+10) + "," + yScale(data[37].Monopolycount+1000)+ ")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", colours(7))
+      .text("Monopoly");
+
+    // Add the path.
+    svg2.append("path")
+        .data([data])
+        .attr("class", "line")
+        .style("stroke",colours(8))
+        .attr("d", magicline);
+
+    svg2.append("text")
+      .attr("transform", "translate(" + (width+10) + "," + yScale(data[37].Magiccount+1000)+ ")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", colours(8))
+      .text("Magic: The Gathering");
+
+    // 12. Appends a circle for each datapoint
+    svg2.selectAll()
+        .data(data.filter(function(d,i){
+          if(i%3 ==0){return d.date;};
+        }))
+      .enter().append("circle") // Uses the enter().append() method
+        .attr("class", "dot") // Assign a class for styling
+        .attr("cx", function(d) { return xScale(d.date); })
+        .attr("cy", function(d) { return yScale(d.Catancount); })
+        .style("fill", colours(1))
+        .attr("r", 15);
+
+      svg2.selectAll()
+            .data(data.filter(function(d,i){
+              if(i%3 ==0){return d.date;};
+            }))
+        .enter().append("text")
+        .attr("x", function(d) { return xScale(d.date - 1000); })
+        .attr("y", function(d) { return yScale(d.Catancount); })
+        .attr("text-anchor", "middle")
+        .text(function(d){return d.Catanrank})
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "10px")
+        .attr("fill", "black");
+
+    // 12. Appends a circle for each datapoint
+    svg2.selectAll()
+        .data(data.filter(function(d,i){
+          if(i%3 ==0){return d.date;};
+        }))
+      .enter().append("circle") // Uses the enter().append() method
+        .attr("class", "dot") // Assign a class for styling
+        .attr("cx", function(d) { return xScale(d.date); })
+        .attr("cy", function(d) { return yScale(d.Codenamescount); })
+        .style("fill", colours(3))
+        .attr("r", 15);
+
+      svg2.selectAll()
+            .data(data.filter(function(d,i){
+              if(i%3 ==0){return d.date;};
+            }))
+        .enter().append("text")
+        .attr("x", function(d) { return xScale(d.date - 1000); })
+        .attr("y", function(d) { return yScale(d.Codenamescount); })
+        .attr("text-anchor", "middle")
+        .text(function(d){return d.Codenamesrank})
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "10px")
+        .attr("fill", "black");
+
+    // 12. Appends a circle for each datapoint
+    svg2.selectAll()
+        .data(data.filter(function(d,i){
+          if(i%3 ==0){return d.date;};
+        }))
+      .enter().append("circle") // Uses the enter().append() method
+        .attr("class", "dot") // Assign a class for styling
+        .attr("cx", function(d) { return xScale(d.date); })
+        .attr("cy", function(d) { return yScale(d.Terraformingcount); })
+        .attr("text-anchor", "middle")
+        .style("fill", colours(4))
+        .attr("r", 15)
+        .text("Dixit")
+        .enter();
+
+    svg2.selectAll()
+          .data(data.filter(function(d,i){
+            if(i%3 ==0){return d.date;};
+          }))
+      .enter().append("text")
+      .attr("x", function(d) { return xScale(d.date - 1000); })
+      .attr("y", function(d) { return yScale(d.Terraformingcount); })
+      .attr("text-anchor", "middle")
+      .text(function(d){return d.Terraformingrank})
+      .attr("font-family", "sans-serif")
+      .attr("font-size", "10px")
+      .attr("fill", "black");
+
+    // 12. Appends a circle for each datapoint
+    svg2.selectAll()
+        .data(data.filter(function(d,i){
+          if(i%3 ==0){return d.date;};
+        }))
+      .enter().append("circle") // Uses the enter().append() method
+        .attr("class", "dot") // Assign a class for styling
+        .attr("cx", function(d) { return xScale(d.date); })
+        .attr("cy", function(d) { return yScale(d.Gloomhavencount); })
+        .attr("text-anchor", "middle")
+        .style("fill", colours(5))
+        .attr("r", 15)
+        .text("Dixit")
+        .enter();
+
+    svg2.selectAll()
+          .data(data.filter(function(d,i){
+            if(i%3 ==0){return d.date;};
+          }))
+      .enter().append("text")
+      .attr("x", function(d) { return xScale(d.date - 1000); })
+      .attr("y", function(d) { return yScale(d.Gloomhavencount); })
+      .attr("text-anchor", "middle")
+      .text(function(d){return d.Gloomhavenrank})
+      .attr("font-family", "sans-serif")
+      .attr("font-size", "10px")
+      .attr("fill", "black");
+// -----------------------------------------------------
+svg3.append("path")
+    .data([data])
+    .attr("class", "line")
+    .style("stroke", colours(1))
+    .attr("d", catansqline);
+
+svg3.append("text")
+  .attr("transform", "translate(" + (width+10) + "," + ySqScale(data[37].Catancount+5000)+ ")")
+  .attr("dy", ".35em")
+  .attr("text-anchor", "start")
+  .style("fill", colours(1))
+  .text("Catan");
+
+// Add the path.
+svg3.append("path")
+    .data([data])
+    .attr("class", "line")
+    .style("stroke", colours(2))
+    .attr("d", dominionsqline);
+
+svg3.append("text")
+  .attr("transform", "translate(" + (width+10) + "," + ySqScale(data[37].Dominioncount+3000)+ ")")
+  .attr("dy", ".35em")
+  .attr("text-anchor", "start")
+  .style("fill", colours(2))
+  .text("Dominion");
+
+// Add the path.
+svg3.append("path")
+    .data([data])
+    .attr("class", "line")
+    .style("stroke", colours(3))
+    .attr("d", codenamessqline);
+
+svg3.append("text")
+  .attr("transform", "translate(" + (width+10) + "," + ySqScale(data[37].Codenamescount+8000)+ ")")
+  .attr("dy", ".35em")
+  .attr("text-anchor", "start")
+  .style("fill", colours(3))
+  .text("Codenames");
+
+// Add the path.
+svg3.append("path")
+    .data([data])
+    .attr("class", "line")
+    .style("stroke", colours(4))
+    .attr("d", terraformingsqline);
+
+svg3.append("text")
+  .attr("transform", "translate(" + (width+10) + "," + ySqScale(data[37].Terraformingcount+10000)+ ")")
+  .attr("dy", ".35em")
+  .attr("text-anchor", "start")
+  .style("fill", colours(4))
+  .text("Terraforming Mars");
+
+// Add the path.
+svg3.append("path")
+    .data([data])
+    .attr("class", "line")
+    .style("stroke", colours(5))
+    .attr("d", gloomhavensqline);
+
+svg3.append("text")
+  .attr("transform", "translate(" + (width+10) + "," + ySqScale(data[37].Gloomhavencount+5000)+ ")")
+  .attr("dy", ".35em")
+  .attr("text-anchor", "start")
+  .style("fill", colours(5))
+  .text("Gloomhaven");
+
+// Add the path.
+svg3.append("path")
+    .data([data])
+    .attr("class", "line")
+    .style("stroke", colours(6))
+    .attr("d", dixitsqline);
+
+svg3.append("text")
+  .attr("transform", "translate(" + (width+10) + "," + ySqScale(data[37].Dixitcount+2000)+ ")")
+  .attr("dy", ".35em")
+  .attr("text-anchor", "start")
+  .style("fill", colours(6))
+  .text("Dixit");
+
+// Add the path.
+svg3.append("path")
+    .data([data])
+    .attr("class", "line")
+    .style("stroke", colours(7))
+    .attr("d", monopolysqline);
+
+svg3.append("text")
+  .attr("transform", "translate(" + (width+10) + "," + ySqScale(data[37].Monopolycount+1000)+ ")")
+  .attr("dy", ".35em")
+  .attr("text-anchor", "start")
+  .style("fill", colours(7))
+  .text("Monopoly");
+
+// Add the path.
+svg3.append("path")
+    .data([data])
+    .attr("class", "line")
+    .style("stroke",colours(8))
+    .attr("d", magicsqline);
+
+svg3.append("text")
+  .attr("transform", "translate(" + (width+10) + "," + ySqScale(data[37].Magiccount+1000)+ ")")
+  .attr("dy", ".35em")
+  .attr("text-anchor", "start")
+  .style("fill", colours(8))
+  .text("Magic: The Gathering");
+
+// 12. Appends a circle for each datapoint
+svg3.selectAll()
+    .data(data.filter(function(d,i){
+      if(i%3 ==0){return d.date;};
+    }))
+  .enter().append("circle") // Uses the enter().append() method
+    .attr("class", "dot") // Assign a class for styling
+    .attr("cx", function(d) { return xScale(d.date); })
+    .attr("cy", function(d) { return ySqScale(d.Catancount); })
+    .style("fill", colours(1))
+    .attr("r", 15);
+
+  svg3.selectAll()
+        .data(data.filter(function(d,i){
+          if(i%3 ==0){return d.date;};
+        }))
+    .enter().append("text")
+    .attr("x", function(d) { return xScale(d.date - 1000); })
+    .attr("y", function(d) { return ySqScale(d.Catancount); })
+    .attr("text-anchor", "middle")
+    .text(function(d){return d.Catanrank})
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "10px")
+    .attr("fill", "black");
+
+// 12. Appends a circle for each datapoint
+svg3.selectAll()
+    .data(data.filter(function(d,i){
+      if(i%3 ==0){return d.date;};
+    }))
+  .enter().append("circle") // Uses the enter().append() method
+    .attr("class", "dot") // Assign a class for styling
+    .attr("cx", function(d) { return xScale(d.date); })
+    .attr("cy", function(d) { return ySqScale(d.Codenamescount); })
+    .style("fill", colours(3))
+    .attr("r", 15);
+
+  svg3.selectAll()
+        .data(data.filter(function(d,i){
+          if(i%3 ==0){return d.date;};
+        }))
+    .enter().append("text")
+    .attr("x", function(d) { return xScale(d.date - 1000); })
+    .attr("y", function(d) { return ySqScale(d.Codenamescount); })
+    .attr("text-anchor", "middle")
+    .text(function(d){return d.Codenamesrank})
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "10px")
+    .attr("fill", "black");
+
+// 12. Appends a circle for each datapoint
+svg3.selectAll()
+    .data(data.filter(function(d,i){
+      if(i%3 ==0){return d.date;};
+    }))
+  .enter().append("circle") // Uses the enter().append() method
+    .attr("class", "dot") // Assign a class for styling
+    .attr("cx", function(d) { return xScale(d.date); })
+    .attr("cy", function(d) { return ySqScale(d.Terraformingcount); })
+    .attr("text-anchor", "middle")
+    .style("fill", colours(4))
+    .attr("r", 15)
+    .text("Dixit")
+    .enter();
+
+svg3.selectAll()
+      .data(data.filter(function(d,i){
+        if(i%3 ==0){return d.date;};
+      }))
+  .enter().append("text")
+  .attr("x", function(d) { return xScale(d.date - 1000); })
+  .attr("y", function(d) { return ySqScale(d.Terraformingcount); })
+  .attr("text-anchor", "middle")
+  .text(function(d){return d.Terraformingrank})
+  .attr("font-family", "sans-serif")
+  .attr("font-size", "10px")
+  .attr("fill", "black");
+
+// 12. Appends a circle for each datapoint
+svg3.selectAll()
+    .data(data.filter(function(d,i){
+      if(i%3 ==0){return d.date;};
+    }))
+  .enter().append("circle") // Uses the enter().append() method
+    .attr("class", "dot") // Assign a class for styling
+    .attr("cx", function(d) { return xScale(d.date); })
+    .attr("cy", function(d) { return ySqScale(d.Gloomhavencount); })
+    .attr("text-anchor", "middle")
+    .style("fill", colours(5))
+    .attr("r", 15)
+    .text("Dixit")
+    .enter();
+
+svg3.selectAll()
+      .data(data.filter(function(d,i){
+        if(i%3 ==0){return d.date;};
+      }))
+  .enter().append("text")
+  .attr("x", function(d) { return xScale(d.date - 1000); })
+  .attr("y", function(d) { return ySqScale(d.Gloomhavencount); })
+  .attr("text-anchor", "middle")
+  .text(function(d){return d.Gloomhavenrank})
+  .attr("font-family", "sans-serif")
+  .attr("font-size", "10px")
+  .attr("fill", "black");
+
+  // -----------------------------------------------------
+  svg4.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke", colours(1))
+      .attr("d", catanlogline);
+
+  svg4.append("text")
+    .attr("transform", "translate(" + (width+10) + "," + yLogScale(data[37].Catancount+5000)+ ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", colours(1))
+    .text("Catan");
+
+  // Add the path.
+  svg4.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke", colours(2))
+      .attr("d", dominionlogline);
+
+  svg4.append("text")
+    .attr("transform", "translate(" + (width+10) + "," + yLogScale(data[37].Dominioncount+3000)+ ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", colours(2))
+    .text("Dominion");
+
+  // Add the path.
+  svg4.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke", colours(3))
+      .attr("d", codenameslogline);
+
+  svg4.append("text")
+    .attr("transform", "translate(" + (width+10) + "," + yLogScale(data[37].Codenamescount+8000)+ ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", colours(3))
+    .text("Codenames");
+
+  // Add the path.
+  svg4.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke", colours(4))
+      .attr("d", terraforminglogline);
+
+  svg4.append("text")
+    .attr("transform", "translate(" + (width+10) + "," + yLogScale(data[37].Terraformingcount+10000)+ ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", colours(4))
+    .text("Terraforming Mars");
+
+  // Add the path.
+  svg4.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke", colours(5))
+      .attr("d", gloomhavenlogline);
+
+  svg4.append("text")
+    .attr("transform", "translate(" + (width+10) + "," + yLogScale(data[37].Gloomhavencount+5000)+ ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", colours(5))
+    .text("Gloomhaven");
+
+  // Add the path.
+  svg4.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke", colours(6))
+      .attr("d", dixitlogline);
+
+  svg4.append("text")
+    .attr("transform", "translate(" + (width+10) + "," + yLogScale(data[37].Dixitcount+2000)+ ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", colours(6))
+    .text("Dixit");
+
+  // Add the path.
+  svg4.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke", colours(7))
+      .attr("d", monopolylogline);
+
+  svg4.append("text")
+    .attr("transform", "translate(" + (width+10) + "," + yLogScale(data[37].Monopolycount+1000)+ ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", colours(7))
+    .text("Monopoly");
+
+  // Add the path.
+  svg4.append("path")
+      .data([data])
+      .attr("class", "line")
+      .style("stroke",colours(8))
+      .attr("d", magiclogline);
+
+  svg4.append("text")
+    .attr("transform", "translate(" + (width+10) + "," + yLogScale(data[37].Magiccount+1000)+ ")")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "start")
+    .style("fill", colours(8))
+    .text("Magic: The Gathering");
+
+  // 12. Appends a circle for each datapoint
+  svg4.selectAll()
+      .data(data.filter(function(d,i){
+        if(i%3 ==0){return d.date;};
+      }))
+    .enter().append("circle") // Uses the enter().append() method
+      .attr("class", "dot") // Assign a class for styling
+      .attr("cx", function(d) { return xScale(d.date); })
+      .attr("cy", function(d) { return yLogScale(d.Catancount); })
+      .style("fill", colours(1))
+      .attr("r", 15);
+
+    svg4.selectAll()
+          .data(data.filter(function(d,i){
+            if(i%3 ==0){return d.date;};
+          }))
+      .enter().append("text")
+      .attr("x", function(d) { return xScale(d.date - 1000); })
+      .attr("y", function(d) { return yLogScale(d.Catancount); })
+      .attr("text-anchor", "middle")
+      .text(function(d){return d.Catanrank})
+      .attr("font-family", "sans-serif")
+      .attr("font-size", "10px")
+      .attr("fill", "black");
+
+  // 12. Appends a circle for each datapoint
+  svg4.selectAll()
+      .data(data.filter(function(d,i){
+        if(i%3 ==0){return d.date;};
+      }))
+    .enter().append("circle") // Uses the enter().append() method
+      .attr("class", "dot") // Assign a class for styling
+      .attr("cx", function(d) { return xScale(d.date); })
+      .attr("cy", function(d) { return yLogScale(d.Codenamescount); })
+      .style("fill", colours(3))
+      .attr("r", 15);
+
+    svg4.selectAll()
+          .data(data.filter(function(d,i){
+            if(i%3 ==0){return d.date;};
+          }))
+      .enter().append("text")
+      .attr("x", function(d) { return xScale(d.date - 1000); })
+      .attr("y", function(d) { return yLogScale(d.Codenamescount); })
+      .attr("text-anchor", "middle")
+      .text(function(d){return d.Codenamesrank})
+      .attr("font-family", "sans-serif")
+      .attr("font-size", "10px")
+      .attr("fill", "black");
+
+  // 12. Appends a circle for each datapoint
+  svg4.selectAll()
+      .data(data.filter(function(d,i){
+        if(i%3 ==0){return d.date;};
+      }))
+    .enter().append("circle") // Uses the enter().append() method
+      .attr("class", "dot") // Assign a class for styling
+      .attr("cx", function(d) { return xScale(d.date); })
+      .attr("cy", function(d) { return yLogScale(d.Terraformingcount); })
+      .attr("text-anchor", "middle")
+      .style("fill", colours(4))
+      .attr("r", 15)
+      .enter();
+
+  svg4.selectAll()
+        .data(data.filter(function(d,i){
+          if(i%3 ==0){return d.date;};
+        }))
+    .enter().append("text")
+    .attr("x", function(d) { return xScale(d.date - 1000); })
+    .attr("y", function(d) { return yLogScale(d.Terraformingcount); })
+    .attr("text-anchor", "middle")
+    .text(function(d){return d.Terraformingrank})
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "10px")
+    .attr("fill", "black");
+
+  // 12. Appends a circle for each datapoint
+  svg4.selectAll()
+      .data(data.filter(function(d,i){
+        if(i%3 ==0){return d.date;};
+      }))
+    .enter().append("circle") // Uses the enter().append() method
+      .attr("class", "dot") // Assign a class for styling
+      .attr("cx", function(d) { return xScale(d.date); })
+      .attr("cy", function(d) { return yLogScale(d.Gloomhavencount); })
+      .attr("text-anchor", "middle")
+      .style("fill", colours(5))
+      .attr("r", 15)
+      .enter();
+
+  svg4.selectAll()
+        .data(data.filter(function(d,i){
+          if(i%3 ==0){return d.date;};
+        }))
+    .enter().append("text")
+    .attr("x", function(d) { return xScale(d.date - 1000); })
+    .attr("y", function(d) { return yLogScale(d.Gloomhavencount); })
+    .attr("text-anchor", "middle")
+    .text(function(d){return d.Gloomhavenrank})
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "10px")
+    .attr("fill", "black");
+
+});
+// 3a ---------------------------------
+// 3. Call the x axis in a group tag
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(xScale).tickFormat(d3.timeFormat("%b %y")));
+
+    // Add the text label for X axis
+    svg.append("text")
+     .attr("text-anchor", "end")
+     .attr("x", width/2 + margin.left -60)
+     .attr("y", height + margin.top + 5)
+     .text("Month");
+
+// 4. Call the y axis in a group tag
+svg.append("g")
+    .attr("class", "y axis")
+    .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
+
+    // Add the text label for Y axis
+    svg.append("text")
+     .attr("text-anchor", "end")
+     .attr("transform", "rotate(-90)")
+     .attr("y", -margin.left + 20)
+     .attr("x", -margin.top - height/2 + 100)
+     .text("Num of Ratings")
+
+     // Add a title
+     svg.append("text")
+       .attr("x", (width / 2))
+       .attr("y", 0 - (margin.top / 2))
+       .attr("text-anchor", "middle")
+       .style("font-size", "16px")
+       .text("Number of Ratings 2016-2020");
+
+// 3b -----------------
+// 3. Call the x axis in a group tag
+svg2.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(xScale).tickFormat(d3.timeFormat("%b %y")));
+
+    // Add the text label for X axis
+    svg2.append("text")
+     .attr("text-anchor", "end")
+     .attr("x", width/2 + margin.left -60)
+     .attr("y", height + margin.top + 5)
+     .text("Month");
+
+// 4. Call the y axis in a group tag
+svg2.append("g")
+  .attr("class", "y axis")
+  .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
+
+  // Add the text label for Y axis
+  svg2.append("text")
+   .attr("text-anchor", "end")
+   .attr("transform", "rotate(-90)")
+   .attr("y", -margin.left + 20)
+   .attr("x", -margin.top - height/2 + 100)
+   .text("Num of Ratings")
+
+   // Add a title
+   svg2.append("text")
+     .attr("x", (width / 2))
+     .attr("y", 0 - (margin.top / 2))
+     .attr("text-anchor", "middle")
+     .style("font-size", "16px")
+     .text("Number of Ratings 2016-2020 with Rankings");
+
+ // 3c1 -----------------
+ // 3. Call the x axis in a group tag
+ svg3.append("g")
+     .attr("class", "x axis")
+     .attr("transform", "translate(0," + height + ")")
+     .call(d3.axisBottom(xScale).tickFormat(d3.timeFormat("%b %y")));
+
+     // Add the text label for X axis
+     svg3.append("text")
+      .attr("text-anchor", "end")
+      .attr("x", width/2 + margin.left -60)
+      .attr("y", height + margin.top + 5)
+      .text("Month");
+
+ // 4. Call the y axis in a group tag
+ svg3.append("g")
+   .attr("class", "y axis")
+   .call(d3.axisLeft(ySqScale)); // Create an axis component with d3.axisLeft
+
+   // Add the text label for Y axis
+   svg3.append("text")
+    .attr("text-anchor", "end")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -margin.left + 20)
+    .attr("x", -margin.top - height/2 + 100)
+    .text("Num of Ratings")
+
+    // Add a title
+    svg3.append("text")
+      .attr("x", (width / 2))
+      .attr("y", 0 - (margin.top / 2))
+      .attr("text-anchor", "middle")
+      .style("font-size", "16px")
+      .text("Number of Ratings 2016-2020 (Square root Scale)");
+
+// 3c2 -----------------
+// 3. Call the x axis in a group tag
+svg4.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(xScale).tickFormat(d3.timeFormat("%b %y")));
+
+    // Add the text label for X axis
+    svg4.append("text")
+     .attr("text-anchor", "end")
+     .attr("x", width/2 + margin.left -60)
+     .attr("y", height + margin.top + 5)
+     .text("Month");
+
+     // Add gt username
+     svg4.append("text")
+       .attr("x", (width - 2))
+       .attr("y", 350)
+       .attr("text-anchor", "middle")
+       .style("font-size", "10px")
+       .text("kbarthelson3");
+
+// 4. Call the y axis in a group tag
+svg4.append("g")
+  .attr("class", "y axis")
+  .call(d3.axisLeft(yLogScale)); // Create an axis component with d3.axisLeft
+
+  // Add the text label for Y axis
+  svg4.append("text")
+   .attr("text-anchor", "end")
+   .attr("transform", "rotate(-90)")
+   .attr("y", -margin.left + 20)
+   .attr("x", -margin.top - height/2 + 100)
+   .text("Num of Ratings")
+
+   // Add a title
+   svg4.append("text")
+     .attr("x", (width / 2))
+     .attr("y", 0 - (margin.top / 2))
+     .attr("text-anchor", "middle")
+     .style("font-size", "16px")
+     .text("Number of Ratings 2016-2020 (Log Scale)");
+
+</script>
