@@ -29,4 +29,20 @@ flask run
 
 ### Frontend
 
-TBA
+Go into the frontend folder 
+
+```
+cd frontend
+```
+
+Npm Install
+
+```
+npm install
+```
+
+Run Locally
+
+```
+ng serve --open
+```

@@ -1,0 +1,19 @@
+<div class = "dialog">
+    <h1 mat-dialog-title>Update Population</h1>
+<div mat-dialog-content>
+  <span>Location: {{data.city_name}}, {{data.state}}</span>
+  <br>
+  <span>Current Population: {{data.population}}</span>
+  <br>
+  <form class="example-form">
+    <mat-form-field class="example-full-width">
+      <mat-label>Input the new popoulation</mat-label>
+      <input matInput [(ngModel)]="newPopulation" [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
+  </form>
+  <p class="errorMessage" *ngIf="showErrorMessage">Please Input A Number</p>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button color="primary" (click)="updatePopulation()" [disabled]="!newPopulation">Update</button>
+</div>
+</div>

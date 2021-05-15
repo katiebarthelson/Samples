@@ -1,0 +1,11 @@
+<div class="holidayHeader">
+    <h1>Holidays</h1>
+    <div class="addHolidayButton" (click)='openDialog()'>
+        <button mat-raised-button color="primary">Add Holiday</button>
+    </div>
+</div>
+<mat-card *ngFor="let f of inputData">
+    <span class="holidayName">{{f.holiday_names}}</span>
+    <span class="holidayDate">{{f.date}}</span>
+</mat-card>
+

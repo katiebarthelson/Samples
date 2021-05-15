@@ -1,0 +1,11 @@
+.dialog {
+    text-align: center;
+}
+
+form {
+    padding-top: 30px;
+}
+
+.errorMessage {
+    color: red;
+}

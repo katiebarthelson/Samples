@@ -1,0 +1,30 @@
+mat-card {
+    width: 100%;
+    display: flex;
+}
+
+.holidayName {
+    width: 70%;
+    text-align: left;
+}
+
+.holidayDate {
+    width: 30%;
+    text-align: right;
+    padding-right: 100px;
+}
+
+h1 {
+    text-align: center;
+    width: 85%;
+}
+
+.holidayHeader {
+    display: flex;
+}
+
+.addHolidayButton {
+    padding-top: 20px;
+    height: 40px;
+    width: 15%;
+}

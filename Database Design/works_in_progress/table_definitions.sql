@@ -84,7 +84,7 @@ CREATE TABLE time_limit (
 
 CREATE TABLE store (
   store_number INTEGER NOT NULL,
-  phone_number VARCHAR(20) NOT NULL,
+  phone_number VARCHAR(20),
   street_address VARCHAR(50),
   has_restaurant BOOLEAN NOT NULL,
   has_snack_bar BOOLEAN NOT NULL,

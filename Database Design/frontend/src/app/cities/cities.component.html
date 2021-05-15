@@ -1,0 +1,7 @@
+<h1>Cities</h1>
+<p>Click on a city below to update its population.</p>
+<mat-card *ngFor="let f of inputData" (click)=openDialog(f)>
+    <span class="cityState">{{f.city_name}}, {{f.state}}</span>
+    <span class="population">Population: {{f.population}}</span>
+</mat-card>
+

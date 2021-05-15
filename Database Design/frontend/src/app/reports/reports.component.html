@@ -1,0 +1,323 @@
+<mat-tab-group (selectedTabChange)="reportClicked($event)">
+    <mat-tab label="Report One">
+        <table mat-table [dataSource]="report1data" class="mat-elevation-z8">
+          
+            <ng-container matColumnDef="category_name">
+              <th mat-header-cell *matHeaderCellDef> Category </th>
+              <td mat-cell *matCellDef="let element"> {{element.category_name}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="product_count">
+              <th mat-header-cell *matHeaderCellDef> Product Count </th>
+              <td mat-cell *matCellDef="let element"> {{element.product_count}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="min_retail_price">
+              <th mat-header-cell *matHeaderCellDef> Minimum Retail Price </th>
+              <td mat-cell *matCellDef="let element"> ${{element.min_retail_price}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="avg_retail_price">
+              <th mat-header-cell *matHeaderCellDef> Average Retail Price </th>
+              <td mat-cell *matCellDef="let element"> ${{element.avg_retail_price}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="max_retail_price">
+                <th mat-header-cell *matHeaderCellDef> Max Retail Price </th>
+                <td mat-cell *matCellDef="let element"> ${{element.max_retail_price}} </td>
+              </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="report1headers"></tr>
+            <tr mat-row *matRowDef="let row; columns: report1headers;"></tr>
+          </table>
+    </mat-tab>
+    <mat-tab label="Report Two">
+        <table mat-table [dataSource]="report2data" class="mat-elevation-z8">
+          
+            <ng-container matColumnDef="pid">
+              <th mat-header-cell *matHeaderCellDef> ID </th>
+              <td mat-cell *matCellDef="let element"> {{element.pid}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="product_name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.product_name}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="retail_price">
+              <th mat-header-cell *matHeaderCellDef> Retail Price </th>
+              <td mat-cell *matCellDef="let element"> ${{element.retail_price}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="total_quantity_sold">
+              <th mat-header-cell *matHeaderCellDef> Total Quantity Sold </th>
+              <td mat-cell *matCellDef="let element"> {{element.total_quantity_sold}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="discounted_quantity_sold">
+                <th mat-header-cell *matHeaderCellDef> Discounted Quantity Sold </th>
+                <td mat-cell *matCellDef="let element"> {{element.discounted_quantity_sold}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="not_discounted_quantity_sold">
+                <th mat-header-cell *matHeaderCellDef> Undiscounted Quantity Sold </th>
+                <td mat-cell *matCellDef="let element"> {{element.not_discounted_quantity_sold}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="actual_revenue">
+                <th mat-header-cell *matHeaderCellDef> Actual Revenue </th>
+                <td mat-cell *matCellDef="let element"> ${{element.actual_revenue}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="predicted_revenue">
+                <th mat-header-cell *matHeaderCellDef> Predicted Revenue </th>
+                <td mat-cell *matCellDef="let element"> ${{element.predicted_revenue}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="revenue_difference">
+                <th mat-header-cell *matHeaderCellDef> Revenue Difference </th>
+                <td mat-cell *matCellDef="let element"> ${{element.revenue_difference}} </td>
+              </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="report2headers"></tr>
+            <tr mat-row *matRowDef="let row; columns: report2headers;"></tr>
+          </table>
+    </mat-tab>
+    <mat-tab label="Report Three">
+      <mat-form-field appearance="fill">
+        <mat-label>Select A State</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let state of states" [value]="state.name" (click)="reportThree(state.abbreviation)">
+            {{state.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+        <table mat-table [dataSource]="report3data" class="mat-elevation-z8" *ngIf="showReportThreeData">
+          
+            <ng-container matColumnDef="store_number">
+              <th mat-header-cell *matHeaderCellDef> Store Number </th>
+              <td mat-cell *matCellDef="let element"> {{element.store_number}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="street_address">
+              <th mat-header-cell *matHeaderCellDef> Street Address </th>
+              <td mat-cell *matCellDef="let element"> {{element.street_address}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="city_name">
+              <th mat-header-cell *matHeaderCellDef> City </th>
+              <td mat-cell *matCellDef="let element"> {{element.city_name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="yearly_revenue">
+              <th mat-header-cell *matHeaderCellDef> Yearly Revenue </th>
+              <td mat-cell *matCellDef="let element"> ${{element.yearly_revenue}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="sale_year">
+                <th mat-header-cell *matHeaderCellDef> Sale Year </th>
+                <td mat-cell *matCellDef="let element"> {{element.sale_year}} </td>
+              </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="report3headers"></tr>
+            <tr mat-row *matRowDef="let row; columns: report3headers;"></tr>
+          </table>
+    </mat-tab>
+    <mat-tab label="Report Four">
+        <table mat-table [dataSource]="report4data" class="mat-elevation-z8">
+          
+            <ng-container matColumnDef="year">
+              <th mat-header-cell *matHeaderCellDef> Year </th>
+              <td mat-cell *matCellDef="let element"> {{element.year}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="total_units_sold">
+              <th mat-header-cell *matHeaderCellDef> Total Units Sold </th>
+              <td mat-cell *matCellDef="let element"> {{element.total_units_sold}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="avg_quantity">
+              <th mat-header-cell *matHeaderCellDef> Average Quantity </th>
+              <td mat-cell *matCellDef="let element"> {{element.avg_quantity}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="groundhog_day_sales">
+              <th mat-header-cell *matHeaderCellDef> Groundhog Day Sales </th>
+              <td mat-cell *matCellDef="let element"> {{element.groundhog_day_sales}} </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="report4headers"></tr>
+            <tr mat-row *matRowDef="let row; columns: report4headers;"></tr>
+          </table>
+    </mat-tab>
+    <mat-tab label="Report Five">
+      <mat-form-field appearance="fill">
+        <mat-label>Select A Year</mat-label>
+        <mat-select [(value)]="selectedYear">
+          <mat-option *ngFor="let year of reportFiveYears" [value]="year">
+            {{year}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Select A Month</mat-label>
+        <mat-select [(value)]="selectedMonth">
+          <mat-option *ngFor="let month of reportFiveMonths" [value]="month.value" [(ngModel)]="selectedMonth" name="monthName" ngDefaultControl>
+            {{month.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="reportFive()" [disabled]="!(selectedYear && selectedMonth)">View Data</button>
+        <table mat-table [dataSource]="report5data" class="mat-elevation-z8">
+          
+            <ng-container matColumnDef="category_name">
+              <th mat-header-cell *matHeaderCellDef> Category </th>
+              <td mat-cell *matCellDef="let element"> {{element.category_name}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="state">
+              <th mat-header-cell *matHeaderCellDef> State </th>
+              <td mat-cell *matCellDef="let element"> {{element.state}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="sum">
+              <th mat-header-cell *matHeaderCellDef> Total Units Sold </th>
+              <td mat-cell *matCellDef="let element"> {{element.total_units_sold}} </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="report5headers"></tr>
+            <tr mat-row *matRowDef="let row; columns: report5headers;"></tr>
+          </table>
+    </mat-tab>
+    <mat-tab label="Report Six">
+        <table mat-table [dataSource]="report6data" class="mat-elevation-z8">
+          
+            <ng-container matColumnDef="year">
+              <th mat-header-cell *matHeaderCellDef> Year </th>
+              <td mat-cell *matCellDef="let element"> {{element.year}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="small">
+              <th mat-header-cell *matHeaderCellDef> Small </th>
+              <td mat-cell *matCellDef="let element"> ${{element.small}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="medium">
+              <th mat-header-cell *matHeaderCellDef> Medium </th>
+              <td mat-cell *matCellDef="let element"> ${{element.medium}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="large">
+                <th mat-header-cell *matHeaderCellDef> Large </th>
+                <td mat-cell *matCellDef="let element"> ${{element.large}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="extra_large">
+                <th mat-header-cell *matHeaderCellDef> Extra Large </th>
+                <td mat-cell *matCellDef="let element"> ${{element.extra_large}} </td>
+              </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="report6headers"></tr>
+            <tr mat-row *matRowDef="let row; columns: report6headers;"></tr>
+          </table>
+    </mat-tab>
+    <mat-tab label="Report Seven">
+      <table mat-table [dataSource]="report7data" class="mat-elevation-z8">
+          
+        <ng-container matColumnDef="month">
+          <th mat-header-cell *matHeaderCellDef> Month </th>
+          <td mat-cell *matCellDef="let element"> {{element.sale_month}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="no_childcare">
+          <th mat-header-cell *matHeaderCellDef> No Childcare Sales</th>
+          <td mat-cell *matCellDef="let element"> ${{element.no_childcare}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="limit30">
+          <th mat-header-cell *matHeaderCellDef> Limit: 30 Sales </th>
+          <td mat-cell *matCellDef="let element"> ${{element.time_limit_cols[0].value}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="limit45">
+            <th mat-header-cell *matHeaderCellDef> Limit: 45 Sales </th>
+            <td mat-cell *matCellDef="let element"> ${{element.time_limit_cols[1].value}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="limit60">
+            <th mat-header-cell *matHeaderCellDef> Limit: 60 Sales </th>
+            <td mat-cell *matCellDef="let element"> ${{element.time_limit_cols[2].value}} </td>
+          </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="report7headers"></tr>
+        <tr mat-row *matRowDef="let row; columns: report7headers;"></tr>
+      </table>
+      
+    </mat-tab>
+    <mat-tab label="Report Eight">
+      <div class='flexbox'>
+        <div class='flexheader'>
+          Category
+        </div>
+        <div class='flexheader'>
+          Store Type
+        </div>
+        <div class='flexheader'>
+          Quantity Sold
+        </div>
+      </div>
+      <div class='flexbox' *ngFor="let c of report8data; let i = index">
+        <div class='flexheader'>
+          {{reportEightKeys[i]}}
+        </div>
+        <div class='flexgroup'>
+          <div class='flexgroupcell'>
+            {{c[reportEightKeys[i]][0].store_type}}
+          </div>
+          <div class='flexgroupcell'>
+            {{c[reportEightKeys[i]][1].store_type}}
+          </div>
+        </div>
+        <div class='flexgroup'>
+          <div class='flexgroupcell'>
+            {{c[reportEightKeys[i]][0].quantity_sold}}
+          </div>
+          <div class='flexgroupcell'>
+            {{c[reportEightKeys[i]][1].quantity_sold}}
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Report Nine">
+        <table mat-table [dataSource]="report9data" class="mat-elevation-z8">
+          
+            <ng-container matColumnDef="pid">
+              <th mat-header-cell *matHeaderCellDef> ID </th>
+              <td mat-cell *matCellDef="let element"> {{element.pid}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="product_name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.product_name}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="sold_during_campaign">
+              <th mat-header-cell *matHeaderCellDef> Number Sold During Campaign </th>
+              <td mat-cell *matCellDef="let element"> {{element.sold_during_campaign}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="sold_outside_campaign">
+                <th mat-header-cell *matHeaderCellDef> Number Sold Outside of Campaign </th>
+                <td mat-cell *matCellDef="let element"> {{element.sold_outside_campaign}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="ad_difference">
+                <th mat-header-cell *matHeaderCellDef> Ad Difference </th>
+                <td mat-cell *matCellDef="let element"> {{element.ad_difference}} </td>
+              </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="report9headers"></tr>
+            <tr mat-row *matRowDef="let row; columns: report9headers;"></tr>
+          </table>
+    </mat-tab>
+  </mat-tab-group>

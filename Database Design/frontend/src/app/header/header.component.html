@@ -1,0 +1,25 @@
+<div class="header">
+    <h1 id="title">
+        LEOFURN Sales Reporting System
+    </h1>
+
+    <div class="menu">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="goToHome()">
+                <span>Home</span>
+              </button>
+            <button mat-menu-item (click)="goToReports()">
+              <span>Reports</span>
+            </button>
+            <button mat-menu-item (click)="goToHolidays()">
+                <span>Holidays</span>
+            </button>
+            <button mat-menu-item (click)="goToCities()">
+                <span>Cities</span>
+            </button>
+          </mat-menu>
+    </div>
+</div>

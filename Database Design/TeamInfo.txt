@@ -1,0 +1,9 @@
+Team032:
+Katherine Barthelson    email: kbarthelson3@gatech.edu
+Erica Chia              email: echia3@gatech.edu
+Samantha Chu            email: schu48@gatech.edu
+Christopher Edwards     email: cedwards84@gatech.edu
+Brandon Jackson         email: bjackson94@gatech.edu
+
+LSRS System SQL Located in: lsrs_back_end.py
+Database Creation SQL Located in: table_definitions.sql

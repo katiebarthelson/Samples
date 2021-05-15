@@ -1,0 +1,20 @@
+<div class = "dialog">
+    <h1 mat-dialog-title>Add Holiday</h1>
+<div mat-dialog-content>
+    <form class="example-form">
+        <mat-form-field class="example-full-width">
+          <mat-label>Name</mat-label>
+          <input matInput [(ngModel)]="holidayName" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+        <br>
+          <mat-form-field appearance="fill">
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="holidayDate" [ngModelOptions]="{standalone: true}">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+      </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button color="primary" (click)="addHoliday()" [disabled]="!(holidayName && holidayDate)">Add Holiday</button>
+</div>

@@ -1,0 +1,23 @@
+mat-card {
+    width: 100%;
+    display: flex;
+}
+
+.cityState {
+    width: 60%;
+    text-align: left;
+}
+
+.population {
+    width: 40%;
+    text-align: right;
+    padding-right: 100px;
+}
+
+h1 {
+    text-align: center;
+}
+
+p {
+    text-align: center;
+}

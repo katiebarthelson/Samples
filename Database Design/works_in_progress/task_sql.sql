@@ -239,7 +239,7 @@ FROM stores_childcare_months scm
 LEFT JOIN sales_with_totals s ON s.store_number = scm.store_number AND date_trunc(''month'', s.date) = scm.month
 GROUP BY scm.month, scm.childcare_category
 ORDER BY scm.month DESC, scm.childcare_category;')
-AS ct(sale_month TEXT, "15" NUMERIC, "30" NUMERIC, "45" NUMERIC, "No childcare" NUMERIC);
+AS ct(sale_month TEXT, "30" NUMERIC, "45" NUMERIC, "60" NUMERIC, "No childcare" NUMERIC);
 
 --Report 8: Restaurant Impact on category Sales
 WITH store_type_counts AS (
@@ -295,3 +295,5 @@ SELECT * FROM top10
 UNION 
 SELECT * FROM bottom10
 ORDER BY ad_difference DESC;
+
+SELECT * FROM active_on;

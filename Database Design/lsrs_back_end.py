@@ -22,10 +22,8 @@ def env(key):
   return os.environ.get(key)
 
 def sql_connection():
-  #return psycopg2.connect(database=env('db'), user=env('user'), password=env('pw'),
-                          #host=env('host'), port=env('port'))
-  return psycopg2.connect(database='lsrs', user='postgres', password='B00b33$',
-                          host='localhost', port='5432')
+  return psycopg2.connect(database=env('db'), user=env('user'), password=env('pw'),
+                          host=env('host'), port=env('port'))
 
 def json_serializer(obj):
   if isinstance(obj, (datetime, date)):
@@ -40,7 +38,7 @@ def select_list_of_dicts(sql):
       cursor.execute(sql)
       return cursor.fetchall()
 
-def update_db(sql):
+def execute_query(sql):
   with sql_connection() as connection:
     with connection.cursor(cursor_factory=RealDictCursor) as cursor:
       cursor.execute(sql)
@@ -64,7 +62,7 @@ def main_menu():
       SELECT COUNT(campaign_description) AS campaign_count FROM advertising_campaign;
     """)
     foodstores = select_list_of_dicts("""
-      SELECT COUNT(store_number) AS food_store_count FROM store WHERE has_restaurant;
+      SELECT COUNT(store_number) AS food_store_count FROM store WHERE has_restaurant OR has_snack_bar;
     """)
     products = select_list_of_dicts("""
       SELECT COUNT(pid) AS product_count FROM product;
@@ -84,60 +82,46 @@ def main_menu():
     return json.dumps(st)
 
 # MAIN MENU SUBTASKS
-@app.route('/viewholiday')
+@app.route('/holiday', methods=['GET'])
 def view_holiday():
   return select_json("""
     SELECT date, holiday_names FROM holiday;
   """)
 
-@app.route('/updateholiday',methods=['GET','POST'])
-def update_holiday():
-    # test row
-    json_data = json.loads('{"date": "2020-02-02","holiday_names": "WORDS222"}')
-    #json_data = json.loads(request.get_json())
-    if not json_data:
-        return jsonify({"message": "No input data provided"}), 400
-    # Validate input
-    try:
-        date = json_data["date"]
-        holiday_names = json_data["holiday_names"]
-        query = f"""
-        IF EXISTS(select date from holiday where date = DATE({date}))
-            UPDATE holiday SET holiday_names = {holiday_names} WHERE date = DATE({date})
-        ELSE
-            INSERT into holiday(DATE({date})) values({holiday_names});
-        """
-        update_db(query)
-    except ValidationError as err:
-        return jsonify(err.messages), 422
-    return jsonify({"message": "Updated Holiday."})
+@app.route('/holiday', methods=['POST'])
+def add_or_update_holiday():
+    json_data = request.get_json()
+    date = json_data["date"]
+    holiday_names = json_data["holiday_names"]
+    date_exists_in_holidays_table = len(select_list_of_dicts(f"SELECT date FROM holiday WHERE date = '{date}'")) > 0
+    if date_exists_in_holidays_table:
+      execute_query(f"""
+        UPDATE holiday
+        SET holiday_names = '{holiday_names}'
+        WHERE date = '{date}';
+      """)
+      return jsonify({"message": "Updated Holiday."})
+    else:
+      execute_query(f"""
+        INSERT INTO holiday VALUES
+          ('{date}', '{holiday_names}');
+      """)
+      return jsonify({"message": "Inserted Holiday."})
 
-@app.route('/viewpopulation')
+@app.route('/population', methods=['GET'])
 def view_population():
   return select_json("""
-    SELECT city_name, state, population FROM city;
+    SELECT city_name, state, population FROM city ORDER BY city_name, state;
   """)
 
-@app.route('/updatepopulation',methods=['GET','POST'])
+@app.route('/population',methods=['POST'])
 def update_population():
-    # test row
-    #json_data = json.loads('{"city_name": "Atlanta","state": "GA","population":"1"}')
-    json_data = json.loads(request.get_json())
-    if not json_data:
-        return jsonify({"message": "No input data provided"}), 400
-    # Validate input
-    try:
-        city_name = json_data["city_name"]
-        state = json_data["state"]
-        population = json_data["population"]
-        query=f"""
-        UPDATE city
-        SET population = '{population}'
-        WHERE city_name = '{city_name}' AND state = '{state}';
-        """
-        update_db(query)
-    except ValidationError as err:
-        return jsonify(err.messages), 422
+    json_data = request.get_json()
+    execute_query(f"""
+      UPDATE city
+      SET population = '{json_data["population"]}'
+      WHERE city_name = '{json_data["city_name"]}' AND state = '{json_data["state"]}';
+    """)
     return jsonify({"message": "Updated City."})
 
 @app.route('/report1')
@@ -146,12 +130,12 @@ def report1():
     SELECT
  		c.category_name,
 		COUNT(p.pid) AS product_count,
-		MIN(p.retail_price) AS min_retail_price,
-		ROUND(AVG(p.retail_price), 2) AS avg_retail_price,
-		MAX(p.retail_price) AS max_retail_price
+		COALESCE(MIN(p.retail_price), 0.00) AS min_retail_price,
+		COALESCE(ROUND(AVG(p.retail_price), 2), 0.00) AS avg_retail_price,
+		COALESCE(MAX(p.retail_price), 0.00) AS max_retail_price
 	FROM category AS c
-	INNER JOIN belongs_to AS bt ON bt.category_name = c.category_name
-	INNER JOIN product AS p ON p.pid = bt.pid
+	LEFT JOIN belongs_to AS bt ON bt.category_name = c.category_name
+	LEFT JOIN product AS p ON p.pid = bt.pid
 	GROUP BY c.category_name
 	ORDER BY c.category_name ASC;
   """)
@@ -240,16 +224,20 @@ def report4():
 @app.route('/report5/<year>/<month>')
 def report5(year=None, month=None):
   return select_json(f"""
+  SELECT category_name, state, total_units_sold FROM (
     SELECT
       bt.category_name,
       st.state,
-      SUM(s.quantity)
+      SUM(s.quantity) AS total_units_sold,
+      DENSE_RANK() OVER(PARTITION BY bt.category_name ORDER BY SUM(s.quantity) DESC) as ranking
     FROM belongs_to bt
     LEFT JOIN sold s ON s.pid = bt.pid
     LEFT JOIN store st ON st.store_number = s.store_number
     WHERE EXTRACT(YEAR FROM s.date) = {year} AND EXTRACT(MONTH FROM s.date) = {month}
     GROUP BY bt.category_name, st.state
-    ORDER BY bt.category_name;
+  ) AS top_category_states
+  WHERE ranking = 1
+  ORDER BY category_name;
   """)
 
 @app.route('/report5/year')
@@ -334,7 +322,7 @@ def report7():
         date_trunc(''month'', d.date) as month
       FROM stores_childcare_categories s
       CROSS JOIN date d
-      WHERE d.date > date_trunc(''month'', CURRENT_DATE) - INTERVAL ''1 year''
+      WHERE d.date > date_trunc(''month'', (select MAX(date) from date)) - INTERVAL ''1 year''
     )
     SELECT
       TO_CHAR(scm.month, ''Month'') || '' '' || EXTRACT(YEAR FROM scm.month) AS month,
